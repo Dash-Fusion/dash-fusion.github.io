@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dash-fusion.github.io/sitemap.xml

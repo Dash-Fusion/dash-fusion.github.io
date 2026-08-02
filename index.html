@@ -3,45 +3,607 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dash Fusion</title>
-<style>body{font-family:system-ui,-apple-system,sans-serif;max-width:640px;margin:48px auto;padding:0 16px;color:#1a1a2e;line-height:1.6}a{color:#3F51B5}</style>
+
+<title>Dash Fusion — offline-first Android utility apps</title>
+<meta name="description" content="Ten small Android utilities that each do one thing well: counters, timers, budgets, notes, a random picker and more. Every app works fully offline, with no account and no tracking.">
+<link rel="canonical" href="https://dash-fusion.github.io/">
+<meta name="author" content="Dash Fusion">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#FBFBFD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0D12" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dash Fusion">
+<meta property="og:url" content="https://dash-fusion.github.io/">
+<meta property="og:title" content="Dash Fusion — offline-first Android utility apps">
+<meta property="og:description" content="Ten small Android utilities that each do one thing well. Every app works fully offline, with no account and no tracking.">
+<meta property="og:image" content="https://dash-fusion.github.io/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dash Fusion — List anything. The ten app icons in a row.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dash Fusion — offline-first Android utility apps">
+<meta name="twitter:description" content="Ten small Android utilities that each do one thing well. Every app works fully offline, with no account and no tracking.">
+<meta name="twitter:image" content="https://dash-fusion.github.io/og.png">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<style>
+:root{
+  --paper:#FBFBFD;
+  --card:#FFFFFF;
+  --ink:#14151C;
+  --muted:#5F6270;
+  --line:#E6E7EE;
+  --brand:#3F51B5;
+  /* The hero pill keeps one fill in both schemes: the dark-mode --brand is
+     tuned for text on dark paper and drops to 2.9:1 behind the pill's white. */
+  --pill:#3F51B5;
+  --tint:7%;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Code","Segoe UI Mono",Menlo,Consolas,monospace;
+  --shell:min(1040px,100% - 2.5rem);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#0C0D12;
+    --card:#14161D;
+    --ink:#EAEBF0;
+    --muted:#9296A6;
+    --line:#23262F;
+    --brand:#8891E8;
+    --tint:16%;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:3px;border-radius:4px}
+
+.shell{width:var(--shell);margin-inline:auto}
+
+/* ---------- eyebrow / label voice ---------- */
+.eyebrow{
+  font-family:var(--mono);
+  font-size:.6875rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:0;
+}
+
+/* ---------- masthead ---------- */
+.masthead{padding:clamp(3rem,9vw,6rem) 0 clamp(2.5rem,6vw,4rem)}
+.wordmark{
+  margin:1.5rem 0 0;
+  font-size:clamp(2.6rem,10.5vw,6rem);
+  font-weight:800;
+  letter-spacing:-.045em;
+  line-height:1.02;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.22em;
+}
+.slot{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  height:1.16em;
+  padding-inline:.34em;
+  border-radius:999px;
+  background:var(--pill);
+  color:#fff;
+  transition:width .55s cubic-bezier(.65,0,.35,1),background-color .55s ease;
+  will-change:width;
+}
+.slot-text{white-space:nowrap}
+/* Offscreen ruler for the pill's target width. Lives outside the <h1> so the
+   heading's text content stays clean for screen readers and crawlers; its font
+   is synced from .slot-text in script. */
+.slot-measure{
+  position:absolute;
+  left:-9999px;
+  top:0;
+  visibility:hidden;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.lede{
+  max-width:34ch;
+  margin:1.6rem 0 0;
+  font-size:clamp(1.0625rem,2.1vw,1.25rem);
+  color:var(--muted);
+  text-wrap:pretty;
+}
+.lede strong{color:var(--ink);font-weight:600}
+
+/* ---------- app rows ---------- */
+.group{margin-bottom:2.75rem}
+.group-label{
+  font-family:var(--mono);
+  font-size:.6875rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:0 0 .5rem;
+  padding-inline:.25rem;
+}
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.row{border-bottom:1px solid var(--line)}
+.row-in{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:1.15rem;
+  padding:1.05rem 1rem;
+  border-radius:12px;
+  transition:background-color .22s ease;
+}
+.row-in::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  width:3px;
+  height:0;
+  border-radius:999px;
+  background:var(--hue);
+  transform:translateY(-50%);
+  transition:height .26s cubic-bezier(.34,1.4,.64,1);
+}
+.row:hover .row-in,
+.row:focus-within .row-in{
+  background:color-mix(in srgb,var(--hue) var(--tint),transparent);
+}
+.row:hover .row-in::before,
+.row:focus-within .row-in::before{height:62%}
+
+.row-icon{
+  width:46px;
+  height:46px;
+  border-radius:11px;
+  display:block;
+  box-shadow:0 1px 2px rgba(20,21,28,.14);
+}
+.row-name{
+  margin:0;
+  font-size:1.0625rem;
+  font-weight:650;
+  letter-spacing:-.012em;
+}
+.row-desc{
+  margin:.15rem 0 0;
+  font-size:.9375rem;
+  line-height:1.45;
+  color:var(--muted);
+  text-wrap:pretty;
+}
+.row-links{
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  font-family:var(--mono);
+  font-size:.75rem;
+  letter-spacing:.02em;
+  white-space:nowrap;
+}
+.row-links a{
+  padding:.42rem .7rem;
+  border-radius:999px;
+  text-decoration:none;
+  color:var(--muted);
+  transition:background-color .18s ease,color .18s ease;
+}
+/* --deep, not --hue: the vivid brand colors drop below 4.5:1 behind white text.
+   :not(.play-link) — the Play button is excluded, see below. */
+.row-links a:not(.play-link):hover{background:var(--deep);color:#fff}
+
+/* The Play mark keeps its own four colors; recolouring a brand logo or dropping
+   it onto a coloured fill is off-limits, so this button tints its chip instead. */
+.play-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  padding:0;
+}
+.play-link:hover{background:color-mix(in srgb,var(--hue) 16%,transparent)}
+.play-glyph{width:19px;height:19px;display:block}
+
+/* ---------- promise ---------- */
+.promise{
+  padding:clamp(2.5rem,6vw,4rem) 0 0;
+  border-top:1px solid var(--line);
+  margin-top:1.25rem;
+}
+.promise-h{
+  margin:1.1rem 0 2rem;
+  font-size:clamp(1.5rem,4vw,2.1rem);
+  font-weight:800;
+  letter-spacing:-.032em;
+  max-width:20ch;
+  line-height:1.15;
+}
+.promise-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:1.75rem 2.25rem;
+}
+.promise-grid h3{
+  font-family:var(--mono);
+  font-size:.6875rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--brand);
+  margin:0 0 .45rem;
+}
+.promise-grid p{margin:0;font-size:.9375rem;color:var(--muted);text-wrap:pretty}
+.footnote{
+  margin:2.25rem 0 0;
+  padding:1rem 1.15rem;
+  border-left:2px solid var(--line);
+  font-size:.875rem;
+  color:var(--muted);
+  max-width:62ch;
+  text-wrap:pretty;
+}
+
+/* ---------- footer ---------- */
+.foot{
+  margin-top:clamp(3rem,7vw,5rem);
+  padding:1.75rem 0 3rem;
+  border-top:1px solid var(--line);
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem 1.5rem;
+  align-items:baseline;
+  justify-content:space-between;
+  font-family:var(--mono);
+  font-size:.75rem;
+  color:var(--muted);
+}
+.foot a{color:var(--ink);text-decoration-color:var(--line);text-underline-offset:3px}
+.foot a:hover{color:var(--brand)}
+
+@media (max-width:640px){
+  .row-in{grid-template-columns:auto 1fr;gap:.9rem .95rem;padding:.95rem .7rem}
+  .row-links{grid-column:1 / -1;margin-left:calc(46px + .95rem);margin-top:.1rem}
+  .row-links a{padding-inline:.55rem}
+  .row-links a:first-child{margin-left:-.55rem}
+}
+/* Touch pointers get a 44px target; the mono labels are only ~33px on their own. */
+@media (pointer:coarse){
+  .row-links a{display:inline-flex;align-items:center;min-height:44px;padding-block:0}
+  .play-link{width:44px;height:44px}
+  .foot a{display:inline-block;padding-block:.35rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+</style>
 </head>
 <body>
-<h1>Dash Fusion</h1>
-<p>Simple, private, offline-first Android utilities.</p>
-<h2>Apps</h2>
-<ul>
-<li><strong>List Calculator</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listcalculator">Google Play</a> ·
-<a href="https://panjitito.github.io/privacy-policy/list_calculator.html">Privacy policy</a></li>
-<li><strong>List Counter</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listcounter">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-counter">Privacy policy</a></li>
-<li><strong>List Timer</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listtimer">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-timer">Privacy policy</a></li>
-<li><strong>List Score</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listscore">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-score">Privacy policy</a></li>
-<li><strong>List Picker</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listpicker">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-picker">Privacy policy</a></li>
-<li><strong>List Date</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listdate">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-date">Privacy policy</a></li>
-<li><strong>List Percent</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listpercent">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-percent">Privacy policy</a></li>
-<li><strong>List Debt</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listdebt">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-debt">Privacy policy</a></li>
-<li><strong>List Notes</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listnotes">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-notes">Privacy policy</a></li>
-<li><strong>List Budget</strong> —
-<a href="https://play.google.com/store/apps/details?id=com.dashfusion.listbudget">Google Play</a> ·
-<a href="https://dash-fusion.github.io/privacy/list-budget">Privacy policy</a></li>
-</ul>
-<p>Contact: dash.fusion@outlook.com</p>
+
+<!-- Google Play mark, defined once and referenced by every row. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="gplay" viewBox="0 0 24 24">
+    <path fill="#00A0FF" d="M3.2 2 13 12 3.2 22Z"/>
+    <path fill="#00F076" d="M3.2 2 17.3 9.5 13 12Z"/>
+    <path fill="#FFCE00" d="M13 12 17.3 9.5 20.8 12 17.3 14.5Z"/>
+    <path fill="#FF3A44" d="M3.2 22 13 12 17.3 14.5Z"/>
+  </symbol>
+</svg>
+
+<header class="masthead shell">
+  <p class="eyebrow">Dash Fusion</p>
+  <h1 class="wordmark">List <span class="slot" id="slot"><span class="slot-text" id="slotText">anything</span></span></h1>
+  <p class="lede">Ten Android utilities that each do <strong>one thing</strong>. They work offline, keep your data on your phone, and never ask who you are.</p>
+  <span class="slot-measure" id="slotMeasure" aria-hidden="true"></span>
+</header>
+
+<main class="shell">
+
+  <section class="group">
+    <h2 class="group-label">Count and track</h2>
+    <ul class="rows">
+      <li class="row" style="--hue:#3F51B5;--deep:#3F51B5">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-counter.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Counter</h3>
+            <p class="row-desc">Tally reps, stock, laps or attendees. As many counters as you need, side by side.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listcounter" aria-label="List Counter on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-counter" aria-label="List Counter privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+      <li class="row" style="--hue:#7C3AED;--deep:#7C3AED">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-score.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Score</h3>
+            <p class="row-desc">Keep score for any game — cards, darts, board games, the classroom.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listscore" aria-label="List Score on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-score" aria-label="List Score privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+      <li class="row" style="--hue:#E8763A;--deep:#B4531F">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-timer.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Timer</h3>
+            <p class="row-desc">Run several named timers at once for cooking, workouts and breaks.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listtimer" aria-label="List Timer on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-timer" aria-label="List Timer privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="group">
+    <h2 class="group-label">Money</h2>
+    <ul class="rows">
+      <li class="row" style="--hue:#4F46E5;--deep:#4F46E5">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-budget.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Budget</h3>
+            <p class="row-desc">Set a monthly amount per category and always see what is left to spend.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listbudget" aria-label="List Budget on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-budget" aria-label="List Budget privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+      <li class="row" style="--hue:#059669;--deep:#04724F">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-debt.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Debt</h3>
+            <p class="row-desc">Track loans and installments, and see what to prepare this month.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listdebt" aria-label="List Debt on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-debt" aria-label="List Debt privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="group">
+    <h2 class="group-label">Calculate</h2>
+    <ul class="rows">
+      <li class="row" style="--hue:#2AA7DF;--deep:#1A6E96">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-calculator.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Calculator</h3>
+            <p class="row-desc">Keep separate calculation lists, each one totalled as you type.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listcalculator" aria-label="List Calculator on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://panjitito.github.io/privacy-policy/list_calculator.html" aria-label="List Calculator privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+      <li class="row" style="--hue:#EC4899;--deep:#BE185D">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-percent.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Percent</h3>
+            <p class="row-desc">Percent of, percent change, tips, tax and discounts in one place.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listpercent" aria-label="List Percent on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-percent" aria-label="List Percent privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+      <li class="row" style="--hue:#2563EB;--deep:#2563EB">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-date.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Date</h3>
+            <p class="row-desc">Days between dates, ages, working days and deadlines that keep themselves current.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listdate" aria-label="List Date on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-date" aria-label="List Date privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="group">
+    <h2 class="group-label">Write and decide</h2>
+    <ul class="rows">
+      <li class="row" style="--hue:#F59E0B;--deep:#A16207">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-notes.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Notes</h3>
+            <p class="row-desc">Notes with checklists, real tables, attachments and one-tap PDF export.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listnotes" aria-label="List Notes on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-notes" aria-label="List Notes privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+      <li class="row" style="--hue:#14B8A6;--deep:#0F766E">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-picker.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Picker</h3>
+            <p class="row-desc">Spin a wheel, draw a name, split teams or flip a coin.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listpicker" aria-label="List Picker on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-picker" aria-label="List Picker privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="promise">
+    <p class="eyebrow">Why they are built this way</p>
+    <h2 class="promise-h">Small apps that mind their own business.</h2>
+    <div class="promise-grid">
+      <div>
+        <h3>Works offline</h3>
+        <p>Every app runs in airplane mode. There is no server to go down and nothing to wait for.</p>
+      </div>
+      <div>
+        <h3>No accounts</h3>
+        <p>No sign-up, no email, no password. Install the app and start using it.</p>
+      </div>
+      <div>
+        <h3>Your data stays put</h3>
+        <p>Notes, budgets, counters and lists are stored on your device. Nothing is uploaded.</p>
+      </div>
+    </div>
+    <p class="footnote">The apps are free and paid for by ads. Google AdMob serves those ads and is the only component that uses the internet — it may use your advertising ID. Each app's privacy policy sets out exactly what that covers.</p>
+  </section>
+
+  <footer class="foot">
+    <span>Dash Fusion · Android utilities</span>
+    <span><a href="mailto:dash.fusion@outlook.com">dash.fusion@outlook.com</a> · <a href="https://dash-fusion.github.io/privacy/">Privacy policies</a></span>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  var slot = document.getElementById('slot');
+  var text = document.getElementById('slotText');
+  var meas = document.getElementById('slotMeasure');
+  if(!slot || !text || !meas) return;
+
+  /* Deepened brand hues — each one clears 4.5:1 behind the pill's white text.
+     The rows below still use the true brand colors, where nothing sits on top. */
+  var items = [
+    {t:'anything',   c:'#3F51B5'},
+    {t:'Counter',    c:'#3F51B5'},
+    {t:'Score',      c:'#7C3AED'},
+    {t:'Timer',      c:'#B4531F'},
+    {t:'Budget',     c:'#4F46E5'},
+    {t:'Debt',       c:'#04724F'},
+    {t:'Calculator', c:'#1A6E96'},
+    {t:'Percent',    c:'#BE185D'},
+    {t:'Date',       c:'#2563EB'},
+    {t:'Notes',      c:'#A16207'},
+    {t:'Picker',     c:'#0F766E'}
+  ];
+  var i = 0;
+
+  /* Match the ruler to the live pill text, then measure. Re-read on every call
+     so a viewport resize (the wordmark is clamp()-scaled) stays accurate. */
+  function size(n){
+    var cs = getComputedStyle(text);
+    meas.style.fontFamily = cs.fontFamily;
+    meas.style.fontSize = cs.fontSize;
+    meas.style.fontWeight = cs.fontWeight;
+    meas.style.fontStyle = cs.fontStyle;
+    meas.style.letterSpacing = cs.letterSpacing;
+    meas.textContent = items[n].t;
+    slot.style.width = (meas.getBoundingClientRect().width +
+                        parseFloat(getComputedStyle(slot).paddingLeft) * 2) + 'px';
+  }
+  function paint(n){
+    size(n);
+    slot.style.backgroundColor = items[n].c;
+    text.textContent = items[n].t;
+  }
+
+  paint(0);
+  window.addEventListener('resize', function(){ size(i); });
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(reduce.matches || !text.animate) return;
+
+  setInterval(function(){
+    i = (i + 1) % items.length;
+    text.animate(
+      [{opacity:1, transform:'translateY(0)'},
+       {opacity:0, transform:'translateY(-42%)', offset:.42},
+       {opacity:0, transform:'translateY(42%)',  offset:.5},
+       {opacity:1, transform:'translateY(0)'}],
+      {duration:620, easing:'cubic-bezier(.65,0,.35,1)'}
+    );
+    setTimeout(function(){ paint(i); }, 260);
+  }, 2400);
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"Organization",
+      "@id":"https://dash-fusion.github.io/#org",
+      "name":"Dash Fusion",
+      "url":"https://dash-fusion.github.io/",
+      "email":"dash.fusion@outlook.com",
+      "logo":"https://dash-fusion.github.io/apple-touch-icon.png",
+      "description":"Developer of offline-first Android utility apps."
+    },
+    {
+      "@type":"WebSite",
+      "@id":"https://dash-fusion.github.io/#site",
+      "url":"https://dash-fusion.github.io/",
+      "name":"Dash Fusion",
+      "publisher":{"@id":"https://dash-fusion.github.io/#org"},
+      "inLanguage":"en"
+    },
+    {
+      "@type":"ItemList",
+      "name":"Dash Fusion Android apps",
+      "numberOfItems":10,
+      "itemListElement":[
+        {"@type":"ListItem","position":1,"item":{"@type":"MobileApplication","name":"List Counter","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listcounter","image":"https://dash-fusion.github.io/icons/list-counter.png","description":"Tally reps, stock, laps or attendees with as many counters as you need.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":2,"item":{"@type":"MobileApplication","name":"List Score","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listscore","image":"https://dash-fusion.github.io/icons/list-score.png","description":"Keep score for any game — cards, darts, board games, the classroom.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":3,"item":{"@type":"MobileApplication","name":"List Timer","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listtimer","image":"https://dash-fusion.github.io/icons/list-timer.png","description":"Run several named timers at once for cooking, workouts and breaks.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":4,"item":{"@type":"MobileApplication","name":"List Budget","applicationCategory":"FinanceApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listbudget","image":"https://dash-fusion.github.io/icons/list-budget.png","description":"Set a monthly amount per category and always see what is left to spend.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":5,"item":{"@type":"MobileApplication","name":"List Debt","applicationCategory":"FinanceApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listdebt","image":"https://dash-fusion.github.io/icons/list-debt.png","description":"Track loans and installments, and see what to prepare this month.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":6,"item":{"@type":"MobileApplication","name":"List Calculator","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listcalculator","image":"https://dash-fusion.github.io/icons/list-calculator.png","description":"Keep separate calculation lists, each one totalled as you type.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":7,"item":{"@type":"MobileApplication","name":"List Percent","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listpercent","image":"https://dash-fusion.github.io/icons/list-percent.png","description":"Percent of, percent change, tips, tax and discounts in one place.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":8,"item":{"@type":"MobileApplication","name":"List Date","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listdate","image":"https://dash-fusion.github.io/icons/list-date.png","description":"Days between dates, ages, working days and deadlines that keep themselves current.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":9,"item":{"@type":"MobileApplication","name":"List Notes","applicationCategory":"ProductivityApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listnotes","image":"https://dash-fusion.github.io/icons/list-notes.png","description":"Notes with checklists, real tables, attachments and one-tap PDF export.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":10,"item":{"@type":"MobileApplication","name":"List Picker","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listpicker","image":"https://dash-fusion.github.io/icons/list-picker.png","description":"Spin a wheel, draw a name, split teams or flip a coin.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}}
+      ]
+    }
+  ]
+}
+</script>
+
 </body>
 </html>

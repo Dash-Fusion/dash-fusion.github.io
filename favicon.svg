@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Dash Fusion">
+  <rect width="64" height="64" rx="14" fill="#3F51B5"/>
+  <rect x="15" y="17" width="34" height="9" rx="4.5" fill="#FFFFFF" opacity=".45"/>
+  <rect x="11" y="29.5" width="42" height="10" rx="5" fill="#FFFFFF"/>
+  <circle cx="18" cy="34.5" r="3" fill="#3F51B5"/>
+  <rect x="15" y="43" width="34" height="9" rx="4.5" fill="#FFFFFF" opacity=".45"/>
+</svg>

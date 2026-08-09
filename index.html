@@ -225,6 +225,13 @@ a{color:inherit}
 .play-link:hover{background:color-mix(in srgb,var(--hue) 16%,transparent)}
 .play-glyph{width:19px;height:19px;display:block}
 
+/* Whole row opens the app's Play page: the Play link's hit-area is stretched
+   over the card via ::after (it anchors to .row-in, the nearest positioned
+   ancestor — .play-link itself must stay non-positioned for that to work).
+   The privacy link is re-raised above the overlay so it keeps its own click. */
+.play-link::after{content:"";position:absolute;inset:0;border-radius:12px}
+.row-links a:not(.play-link){position:relative}
+
 /* ---------- promise ---------- */
 .promise{
   padding:clamp(2.5rem,6vw,4rem) 0 0;

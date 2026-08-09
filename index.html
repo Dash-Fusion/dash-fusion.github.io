@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Dash Fusion — offline-first Android utility apps</title>
-<meta name="description" content="Ten small Android utilities that each do one thing well: counters, timers, budgets, notes, a random picker and more. Every app works fully offline, with no account and no tracking.">
+<meta name="description" content="Ten small Android utilities that each do one thing well — counters, timers, budgets, notes and more — plus Potion Sort, an offline color-sort puzzle with 999 levels. Everything works fully offline, with no account required.">
 <link rel="canonical" href="https://dash-fusion.github.io/">
 <meta name="author" content="Dash Fusion">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -16,14 +16,14 @@
 <meta property="og:site_name" content="Dash Fusion">
 <meta property="og:url" content="https://dash-fusion.github.io/">
 <meta property="og:title" content="Dash Fusion — offline-first Android utility apps">
-<meta property="og:description" content="Ten small Android utilities that each do one thing well. Every app works fully offline, with no account and no tracking.">
+<meta property="og:description" content="Ten small Android utilities that each do one thing well, plus Potion Sort — an offline color-sort puzzle. No account required.">
 <meta property="og:image" content="https://dash-fusion.github.io/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Dash Fusion — List anything. The ten app icons in a row.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dash Fusion — offline-first Android utility apps">
-<meta name="twitter:description" content="Ten small Android utilities that each do one thing well. Every app works fully offline, with no account and no tracking.">
+<meta name="twitter:description" content="Ten small Android utilities that each do one thing well, plus Potion Sort — an offline color-sort puzzle. No account required.">
 <meta name="twitter:image" content="https://dash-fusion.github.io/og.png">
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -313,7 +313,7 @@ a{color:inherit}
 <header class="masthead shell">
   <p class="eyebrow">Dash Fusion</p>
   <h1 class="wordmark">List <span class="slot" id="slot"><span class="slot-text" id="slotText">anything</span></span></h1>
-  <p class="lede">Ten Android utilities that each do <strong>one thing</strong>. They work offline, keep your data on your phone, and never ask who you are.</p>
+  <p class="lede">Ten Android utilities that each do <strong>one thing</strong> — and a potion-sorting puzzle for your breaks. Everything works offline, keeps your data on your phone, and never asks who you are.</p>
   <span class="slot-measure" id="slotMeasure" aria-hidden="true"></span>
 </header>
 
@@ -473,6 +473,25 @@ a{color:inherit}
     </ul>
   </section>
 
+  <section class="group">
+    <h2 class="group-label">Play</h2>
+    <ul class="rows">
+      <li class="row" style="--hue:#A855F7;--deep:#7E22CE">
+        <div class="row-in">
+          <img class="row-icon" src="icons/potion-sort.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">Potion Sort</h3>
+            <p class="row-desc">Sort the colors until every potion is pure. 999 offline puzzles and a daily brew.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.potion_sort" aria-label="Potion Sort on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/potion-sort" aria-label="Potion Sort privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
   <section class="promise">
     <p class="eyebrow">Why they are built this way</p>
     <h2 class="promise-h">Small apps that mind their own business.</h2>
@@ -487,14 +506,14 @@ a{color:inherit}
       </div>
       <div>
         <h3>Your data stays put</h3>
-        <p>Notes, budgets, counters and lists are stored on your device. Nothing is uploaded.</p>
+        <p>Notes, budgets, counters and game progress are stored on your device. Your content is never uploaded.</p>
       </div>
     </div>
-    <p class="footnote">The apps are free and paid for by ads. Google AdMob serves those ads and is the only component that uses the internet — it may use your advertising ID. Each app's privacy policy sets out exactly what that covers.</p>
+    <p class="footnote">The apps are free and paid for by ads. Google AdMob serves those ads and may use your advertising ID; Potion Sort additionally uses Google Firebase for anonymous crash reports and gameplay statistics. Each app's privacy policy sets out exactly what that covers.</p>
   </section>
 
   <footer class="foot">
-    <span>Dash Fusion · Android utilities</span>
+    <span>Dash Fusion · Android apps</span>
     <span><a href="mailto:dash.fusion@outlook.com">dash.fusion@outlook.com</a> · <a href="https://dash-fusion.github.io/privacy/">Privacy policies</a></span>
   </footer>
 
@@ -587,7 +606,7 @@ a{color:inherit}
     {
       "@type":"ItemList",
       "name":"Dash Fusion Android apps",
-      "numberOfItems":10,
+      "numberOfItems":11,
       "itemListElement":[
         {"@type":"ListItem","position":1,"item":{"@type":"MobileApplication","name":"List Counter","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listcounter","image":"https://dash-fusion.github.io/icons/list-counter.png","description":"Tally reps, stock, laps or attendees with as many counters as you need.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
         {"@type":"ListItem","position":2,"item":{"@type":"MobileApplication","name":"List Score","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listscore","image":"https://dash-fusion.github.io/icons/list-score.png","description":"Keep score for any game — cards, darts, board games, the classroom.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
@@ -598,7 +617,8 @@ a{color:inherit}
         {"@type":"ListItem","position":7,"item":{"@type":"MobileApplication","name":"List Percent","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listpercent","image":"https://dash-fusion.github.io/icons/list-percent.png","description":"Percent of, percent change, tips, tax and discounts in one place.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
         {"@type":"ListItem","position":8,"item":{"@type":"MobileApplication","name":"List Date","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listdate","image":"https://dash-fusion.github.io/icons/list-date.png","description":"Days between dates, ages, working days and deadlines that keep themselves current.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
         {"@type":"ListItem","position":9,"item":{"@type":"MobileApplication","name":"List Notes","applicationCategory":"ProductivityApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listnotes","image":"https://dash-fusion.github.io/icons/list-notes.png","description":"Notes with checklists, real tables, attachments and one-tap PDF export.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
-        {"@type":"ListItem","position":10,"item":{"@type":"MobileApplication","name":"List Picker","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listpicker","image":"https://dash-fusion.github.io/icons/list-picker.png","description":"Spin a wheel, draw a name, split teams or flip a coin.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}}
+        {"@type":"ListItem","position":10,"item":{"@type":"MobileApplication","name":"List Picker","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listpicker","image":"https://dash-fusion.github.io/icons/list-picker.png","description":"Spin a wheel, draw a name, split teams or flip a coin.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":11,"item":{"@type":"MobileApplication","name":"Potion Sort","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.potion_sort","image":"https://dash-fusion.github.io/icons/potion-sort.png","description":"Offline color-sort puzzle with 999 solver-verified levels and a daily challenge.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}}
       ]
     }
   ]

@@ -24,7 +24,7 @@ REGULAR = "C:/Windows/Fonts/segoeui.ttf"
 # Shipping order, matching the page.
 APPS = [
     "counter", "score", "timer", "budget", "debt",
-    "calculator", "percent", "date", "notes", "picker",
+    "calculator", "percent", "date", "notes", "picker", "qr",
 ]
 
 
@@ -62,7 +62,7 @@ def build_og(path):
 
     d.text(
         (left, py1 + 46),
-        "Ten Android utilities that each do one thing.",
+        "Eleven Android utilities that each do one thing.",
         font=sub,
         fill=INK,
     )

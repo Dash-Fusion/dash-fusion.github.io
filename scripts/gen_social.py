@@ -24,7 +24,7 @@ REGULAR = "C:/Windows/Fonts/segoeui.ttf"
 # Shipping order, matching the page.
 APPS = [
     "counter", "score", "timer", "budget", "debt",
-    "calculator", "percent", "date", "notes", "picker", "qr",
+    "calculator", "percent", "date", "notes", "picker", "qr", "habit",
 ]
 
 
@@ -62,7 +62,7 @@ def build_og(path):
 
     d.text(
         (left, py1 + 46),
-        "Eleven Android utilities that each do one thing.",
+        "Twelve Android utilities that each do one thing.",
         font=sub,
         fill=INK,
     )
@@ -75,11 +75,16 @@ def build_og(path):
 
     # The family, as a row of its own icons.
     size, gap_i = 74, 22
+    present = [n for n in APPS if (ICONS / f"list-{n}.png").exists()]
+    # Auto-fit: shrink the gap, then the tiles, so the row survives new apps.
+    avail = W - left * 2
+    while size * len(present) + gap_i * (len(present) - 1) > avail and gap_i > 10:
+        gap_i -= 1
+    while size * len(present) + gap_i * (len(present) - 1) > avail and size > 48:
+        size -= 1
     x, y = left, H - 74 - size
-    for name in APPS:
+    for name in present:
         f = ICONS / f"list-{name}.png"
-        if not f.exists():
-            continue
         ic = Image.open(f).convert("RGBA").resize((size, size), Image.LANCZOS)
         mask = Image.new("L", (size, size), 0)
         ImageDraw.Draw(mask).rounded_rectangle(

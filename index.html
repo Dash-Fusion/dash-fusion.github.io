@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Dash Fusion — offline-first Android utility apps</title>
-<meta name="description" content="Fourteen small Android utilities that each do one thing well — counters, timers, budgets, subscriptions, shopping lists, notes, QR codes and more — plus two offline games: Potion Sort color-sort puzzles and Neon PingPong arcade duels. Everything works fully offline, with no account required.">
+<meta name="description" content="Fifteen small Android utilities that each do one thing well — counters, timers, budgets, subscriptions, shopping lists, notes, QR codes and more — plus two offline games: Potion Sort color-sort puzzles and Neon PingPong arcade duels. Everything works fully offline, with no account required.">
 <link rel="canonical" href="https://dash-fusion.github.io/">
 <meta name="author" content="Dash Fusion">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -16,14 +16,14 @@
 <meta property="og:site_name" content="Dash Fusion">
 <meta property="og:url" content="https://dash-fusion.github.io/">
 <meta property="og:title" content="Dash Fusion — offline-first Android utility apps">
-<meta property="og:description" content="Fourteen small Android utilities that each do one thing well, plus two offline games — Potion Sort and Neon PingPong. No account required.">
+<meta property="og:description" content="Fifteen small Android utilities that each do one thing well, plus two offline games — Potion Sort and Neon PingPong. No account required.">
 <meta property="og:image" content="https://dash-fusion.github.io/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Dash Fusion — List anything. The fourteen app icons in a row.">
+<meta property="og:image:alt" content="Dash Fusion — List anything. The fifteen app icons in a row.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dash Fusion — offline-first Android utility apps">
-<meta name="twitter:description" content="Fourteen small Android utilities that each do one thing well, plus two offline games — Potion Sort and Neon PingPong. No account required.">
+<meta name="twitter:description" content="Fifteen small Android utilities that each do one thing well, plus two offline games — Potion Sort and Neon PingPong. No account required.">
 <meta name="twitter:image" content="https://dash-fusion.github.io/og.png">
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -320,7 +320,7 @@ a{color:inherit}
 <header class="masthead shell">
   <p class="eyebrow">Dash Fusion</p>
   <h1 class="wordmark">List <span class="slot" id="slot"><span class="slot-text" id="slotText">anything</span></span></h1>
-  <p class="lede">Fourteen Android utilities that each do <strong>one thing</strong> — and two offline games for your breaks. Everything works offline, keeps your data on your phone, and never asks who you are.</p>
+  <p class="lede">Fifteen Android utilities that each do <strong>one thing</strong> — and two offline games for your breaks. Everything works offline, keeps your data on your phone, and never asks who you are.</p>
   <span class="slot-measure" id="slotMeasure" aria-hidden="true"></span>
 </header>
 
@@ -522,6 +522,19 @@ a{color:inherit}
           </div>
         </div>
       </li>
+      <li class="row" style="--hue:#4632B4;--deep:#4632B4">
+        <div class="row-in">
+          <img class="row-icon" src="icons/list-todo.png" width="46" height="46" alt="" decoding="async">
+          <div>
+            <h3 class="row-name">List Todo</h3>
+            <p class="row-desc">To-do lists with unlimited nested sub-tasks: tick a parent to finish the branch, due dates, reminders and repeats at any depth.</p>
+          </div>
+          <div class="row-links">
+            <a class="play-link" href="https://play.google.com/store/apps/details?id=com.dashfusion.listtodo" aria-label="List Todo on Google Play" title="Get it on Google Play"><svg class="play-glyph" aria-hidden="true" focusable="false"><use href="#gplay"></use></svg></a>
+            <a href="https://dash-fusion.github.io/privacy/list-todo" aria-label="List Todo privacy policy">Privacy</a>
+          </div>
+        </div>
+      </li>
     </ul>
   </section>
 
@@ -627,7 +640,8 @@ a{color:inherit}
     {t:'QR',         c:'#3B1FD9'},
     {t:'Habit',      c:'#0E7A48'},
     {t:'Subs',       c:'#5B33D6'},
-    {t:'Grocery',    c:'#146B45'}
+    {t:'Grocery',    c:'#146B45'},
+    {t:'Todo',       c:'#4632B4'}
   ];
   var i = 0;
 
@@ -694,7 +708,7 @@ a{color:inherit}
     {
       "@type":"ItemList",
       "name":"Dash Fusion Android apps",
-      "numberOfItems":16,
+      "numberOfItems":17,
       "itemListElement":[
         {"@type":"ListItem","position":1,"item":{"@type":"MobileApplication","name":"List Counter","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listcounter","image":"https://dash-fusion.github.io/icons/list-counter.png","description":"Tally reps, stock, laps or attendees with as many counters as you need.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
         {"@type":"ListItem","position":2,"item":{"@type":"MobileApplication","name":"List Habit","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listhabit","image":"https://dash-fusion.github.io/icons/list-habit.png","description":"Offline habit tracker — daily, weekday or weekly-goal habits with streaks, a month calendar and gentle reminders.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
@@ -709,9 +723,10 @@ a{color:inherit}
         {"@type":"ListItem","position":11,"item":{"@type":"MobileApplication","name":"List Notes","applicationCategory":"ProductivityApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listnotes","image":"https://dash-fusion.github.io/icons/list-notes.png","description":"Notes with checklists, real tables, attachments and one-tap PDF export.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
         {"@type":"ListItem","position":12,"item":{"@type":"MobileApplication","name":"List Picker","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listpicker","image":"https://dash-fusion.github.io/icons/list-picker.png","description":"Spin a wheel, draw a name, split teams or flip a coin.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
         {"@type":"ListItem","position":13,"item":{"@type":"MobileApplication","name":"List Grocery","applicationCategory":"ShoppingApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listgrocery","image":"https://dash-fusion.github.io/icons/list-grocery.png","description":"Offline shopping list built for the aisle — quick add, aisle order per store, staples, templates and an estimated total. No account, no banner ads.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
-        {"@type":"ListItem","position":14,"item":{"@type":"MobileApplication","name":"List QR","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.qrgenerator","image":"https://dash-fusion.github.io/icons/list-qr.png","description":"Offline QR code and barcode generator — styled codes that still scan, saved to a list on your device.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
-        {"@type":"ListItem","position":15,"item":{"@type":"MobileApplication","name":"Neon PingPong","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.pingpong","image":"https://dash-fusion.github.io/icons/pingpong.png","description":"Neon arcade ping pong — solo vs AI, two players on one phone, or Wi-Fi multiplayer. Fully offline.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
-        {"@type":"ListItem","position":16,"item":{"@type":"MobileApplication","name":"Potion Sort","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.potion_sort","image":"https://dash-fusion.github.io/icons/potion-sort.png","description":"Offline color-sort puzzle with 999 solver-verified levels and a daily challenge.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}}
+        {"@type":"ListItem","position":14,"item":{"@type":"MobileApplication","name":"List Todo","applicationCategory":"ProductivityApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.listtodo","image":"https://dash-fusion.github.io/icons/list-todo.png","description":"Offline to-do list with unlimited nested sub-tasks — tick a parent to finish the branch, plus due dates, reminders and repeating tasks at any depth. No account, no banner ads.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":15,"item":{"@type":"MobileApplication","name":"List QR","applicationCategory":"UtilitiesApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.qrgenerator","image":"https://dash-fusion.github.io/icons/list-qr.png","description":"Offline QR code and barcode generator — styled codes that still scan, saved to a list on your device.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":16,"item":{"@type":"MobileApplication","name":"Neon PingPong","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.pingpong","image":"https://dash-fusion.github.io/icons/pingpong.png","description":"Neon arcade ping pong — solo vs AI, two players on one phone, or Wi-Fi multiplayer. Fully offline.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}},
+        {"@type":"ListItem","position":17,"item":{"@type":"MobileApplication","name":"Potion Sort","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://play.google.com/store/apps/details?id=com.dashfusion.potion_sort","image":"https://dash-fusion.github.io/icons/potion-sort.png","description":"Offline color-sort puzzle with 999 solver-verified levels and a daily challenge.","author":{"@id":"https://dash-fusion.github.io/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}}
       ]
     }
   ]

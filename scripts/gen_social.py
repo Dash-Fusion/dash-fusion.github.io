@@ -25,7 +25,7 @@ REGULAR = "C:/Windows/Fonts/segoeui.ttf"
 APPS = [
     "counter", "score", "timer", "budget", "debt",
     "calculator", "percent", "date", "notes", "picker", "qr", "habit", "subs", "grocery",
-    "todo", "invoice", "water", "countdown", "weight", "pack", "fast", "split", "savings", "meds", "baby",
+    "todo", "invoice", "water", "countdown", "weight", "pack", "fast", "split", "savings", "meds", "baby", "recipe",
 ]
 
 
@@ -63,7 +63,7 @@ def build_og(path):
 
     d.text(
         (left, py1 + 46),
-        "Twenty-five Android utilities that each do one thing.",
+        "Twenty-six Android utilities that each do one thing.",
         font=sub,
         fill=INK,
     )

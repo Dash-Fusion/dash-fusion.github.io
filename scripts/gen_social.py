@@ -26,6 +26,7 @@ APPS = [
     "counter", "score", "timer", "budget", "debt",
     "calculator", "percent", "date", "notes", "picker", "qr", "habit", "subs", "grocery",
     "todo", "invoice", "water", "countdown", "weight", "pack", "fast", "split", "savings", "meds", "baby", "recipe", "voice", "flashcards", "convert",
+    "journal", "birthday", "car", "chores",
 ]
 
 
@@ -63,7 +64,10 @@ def build_og(path):
 
     d.text(
         (left, py1 + 46),
-        "Twenty-nine Android utilities that each do one thing.",
+        "Thirty-three Android utilities that each do one thing.",
+        # Spelled out, not "%d" - so it does NOT move when APPS grows,
+        # and a regex looking for a digit will miss it. It was four apps
+        # behind on 2026-09-06 for exactly that reason.
         font=sub,
         fill=INK,
     )

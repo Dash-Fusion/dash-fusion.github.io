@@ -26,12 +26,32 @@ APPS = [
     "counter", "score", "timer", "budget", "debt",
     "calculator", "percent", "date", "notes", "picker", "qr", "habit", "subs", "grocery",
     "todo", "invoice", "water", "countdown", "weight", "pack", "fast", "split", "savings", "meds", "baby", "recipe", "voice", "flashcards", "convert",
-    "journal", "birthday", "car", "chores", "pantry", "plant",
+    "journal", "birthday", "car", "chores", "pantry", "plant", "hours",
 ]
 
 
 def rounded(draw, box, radius, fill):
     draw.rounded_rectangle(box, radius=radius, fill=fill)
+
+
+def fit_grid(n, avail_w, avail_h, gap=10, max_size=74, min_size=34):
+    """Rows, icons per row, tile size and gap that fit `n` icons in the box.
+
+    Fewest rows first, then the largest tile that fits both ways. Raises
+    rather than returning something that would be drawn off the canvas -
+    the failure this replaced was silent, and silence is the whole problem.
+    """
+    for rows in (1, 2, 3, 4):
+        per_row = -(-n // rows)                      # ceil
+        s_w = (avail_w - gap * (per_row - 1)) // per_row
+        s_h = (avail_h - gap * (rows - 1)) // rows
+        size = min(max_size, s_w, s_h)
+        if size >= min_size:
+            return rows, per_row, int(size), gap
+    raise SystemExit(
+        f"{n} icons will not fit legibly in {avail_w}x{avail_h}; "
+        "give the strip more room or start dropping icons on purpose"
+    )
 
 
 def build_og(path):
@@ -64,7 +84,7 @@ def build_og(path):
 
     d.text(
         (left, py1 + 46),
-        "Thirty-five Android utilities that each do one thing.",
+        "Thirty-six Android utilities that each do one thing.",
         # Spelled out, not "%d" - so it does NOT move when APPS grows,
         # and a regex looking for a digit will miss it. It was four apps
         # behind on 2026-09-06 for exactly that reason.
@@ -78,25 +98,34 @@ def build_og(path):
         fill=MUTED,
     )
 
-    # The family, as a row of its own icons.
-    size, gap_i = 74, 22
+    # The family, as a grid of its own icons.
     present = [n for n in APPS if (ICONS / f"list-{n}.png").exists()]
-    # Auto-fit: shrink the gap, then the tiles, so the row survives new apps.
-    avail = W - left * 2
-    while size * len(present) + gap_i * (len(present) - 1) > avail and gap_i > 10:
-        gap_i -= 1
-    while size * len(present) + gap_i * (len(present) - 1) > avail and size > 48:
-        size -= 1
-    x, y = left, H - 74 - size
-    for name in present:
-        f = ICONS / f"list-{name}.png"
-        ic = Image.open(f).convert("RGBA").resize((size, size), Image.LANCZOS)
-        mask = Image.new("L", (size, size), 0)
-        ImageDraw.Draw(mask).rounded_rectangle(
-            (0, 0, size - 1, size - 1), radius=int(size * 0.235), fill=255
-        )
-        img.paste(ic, (x, y), mask)
-        x += size + gap_i
+    avail_w = W - left * 2
+    avail_h = 120          # from just under the tagline down to the URL line
+    rows, per_row, size, gap_i = fit_grid(len(present), avail_w, avail_h)
+    # The old code only ever drew ONE row: it shrank the gap to 10 and the
+    # tile to 48 and then gave up, so from about the nineteenth app onward
+    # every further icon was painted past the right edge of the canvas and
+    # was simply not in the picture. At 36 apps the row wanted 2078px of a
+    # 1028px strip and nineteen icons were invisible - including every app
+    # added since. Nothing warned, because drawing off-canvas is legal.
+    # fit_grid now picks the row count, and the assertion below is what
+    # would have caught it.
+    block_h = rows * size + gap_i * (rows - 1)
+    y = H - 74 - block_h               # bottom edge stays clear of the URL line
+    for r in range(rows):
+        x = left
+        for name in present[r * per_row:(r + 1) * per_row]:
+            f = ICONS / f"list-{name}.png"
+            ic = Image.open(f).convert("RGBA").resize((size, size), Image.LANCZOS)
+            mask = Image.new("L", (size, size), 0)
+            ImageDraw.Draw(mask).rounded_rectangle(
+                (0, 0, size - 1, size - 1), radius=int(size * 0.235), fill=255
+            )
+            img.paste(ic, (x, y), mask)
+            x += size + gap_i
+        assert x - gap_i <= W - left + 1, f"icon row {r} overflows the canvas"
+        y += size + gap_i
 
     d.text((left, H - 52), "dash-fusion.github.io", font=tag, fill=MUTED)
 

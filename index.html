@@ -246,6 +246,60 @@ a{color:inherit}
 .play-link::after{content:"";position:absolute;inset:0;border-radius:12px}
 .row-links a:not(.play-link){position:relative}
 
+/* ---------- find an app ---------- */
+/* The whole block is hidden in the markup and unhidden by the script, so a
+   browser with no JavaScript never sees a search box that cannot search. A
+   control that is drawn to be used and answers nothing is what Google Play
+   rejected a sibling app for on 2026-09-10. */
+.finder{margin:0 0 1.6rem}
+.finder-label{
+  display:block;
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:.45rem;
+}
+.finder-input{
+  width:100%;
+  box-sizing:border-box;
+  padding:.7rem .95rem;
+  font:inherit;
+  font-size:1rem;
+  color:var(--ink);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+.finder-input::placeholder{color:var(--muted)}
+.finder-input:focus{
+  outline:none;
+  border-color:var(--muted);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--muted) 18%,transparent);
+}
+.finder-count{
+  margin:.5rem 0 0;
+  min-height:1.1em;
+  font-family:var(--mono);
+  font-size:.75rem;
+  color:var(--muted);
+}
+.finder-empty{
+  margin:0 0 1.6rem;
+  color:var(--muted);
+}
+.finder-clear{
+  font:inherit;
+  color:var(--ink);
+  background:none;
+  border:0;
+  padding:0;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
 /* ---------- promise ---------- */
 .promise{
   padding:clamp(2.5rem,6vw,4rem) 0 0;
@@ -339,6 +393,18 @@ a{color:inherit}
 </header>
 
 <main class="shell">
+
+  <div class="finder" id="finder" hidden>
+    <label class="finder-label" for="appSearch">Find an app</label>
+    <input id="appSearch" class="finder-input" type="search" autocomplete="off"
+           spellcheck="false" placeholder="Name, or what it does"
+           aria-describedby="finderCount">
+    <p class="finder-count" id="finderCount" role="status" aria-live="polite"></p>
+  </div>
+  <p class="finder-empty" id="finderEmpty" hidden>
+    Nothing matches that. Try a shorter word &mdash; or
+    <button type="button" class="finder-clear" id="finderClear">show everything</button>.
+  </p>
 
   <section class="group">
     <h2 class="group-label">Count and track</h2>
@@ -1162,6 +1228,81 @@ a{color:inherit}
     );
     setTimeout(function(){ paint(i); }, 260);
   }, 2400);
+})();
+</script>
+
+<script>
+/* Find an app.
+   The markup ships hidden; this unhides it. No script, no box - rather than a
+   box that does nothing, which is the shape Play rejects. */
+(function(){
+  var finder = document.getElementById('finder');
+  var input  = document.getElementById('appSearch');
+  var count  = document.getElementById('finderCount');
+  var empty  = document.getElementById('finderEmpty');
+  var clear  = document.getElementById('finderClear');
+  if(!finder || !input || !count || !empty) return;
+
+  var rows = [].slice.call(document.querySelectorAll('.row'));
+  if(!rows.length) return;
+
+  /* One haystack per row, built once: the name, the description and the
+     package id, so listmood, mood and check-in all find the same row. */
+  var index = rows.map(function(row){
+    var name = row.querySelector('.row-name');
+    var desc = row.querySelector('.row-desc');
+    var link = row.querySelector('a[href*="details?id="]');
+    var priv = row.querySelector('a[href*="/privacy/"]');
+    var parts = [
+      name ? name.textContent : '',
+      desc ? desc.textContent : '',
+      link ? link.getAttribute('href').split('id=')[1] : '',
+      priv ? priv.getAttribute('href').split('/privacy/')[1] : ''
+    ];
+    /* A draft app has no store link, so its package id reaches this only
+       through the privacy slug - list-mood, not listmood. Keeping a
+       punctuation-stripped copy alongside means both spellings find it, and
+       so does 'list mood'. Found by a test, after the Coming soon badges
+       took the store links away. */
+    var hay = parts.join(' ').toLowerCase();
+    return {row:row, hay:hay + ' ' + hay.replace(/[-_.]/g, '')};
+  });
+
+  var groups = [].slice.call(document.querySelectorAll('.group'));
+  var total = rows.length;
+
+  function apply(q){
+    var terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    var shown = 0;
+    index.forEach(function(entry){
+      var hit = terms.every(function(t){ return entry.hay.indexOf(t) !== -1; });
+      entry.row.hidden = !hit;
+      if(hit) shown++;
+    });
+    /* A heading with nothing under it is worse than no heading. */
+    groups.forEach(function(g){
+      var any = [].slice.call(g.querySelectorAll('.row')).some(function(r){ return !r.hidden; });
+      g.hidden = !any;
+    });
+    empty.hidden = shown !== 0;
+    count.textContent = terms.length === 0
+      ? ''
+      : (shown === 0 ? 'No apps match' : shown + ' of ' + total + ' apps');
+  }
+
+  input.addEventListener('input', function(){ apply(input.value); });
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ input.value = ''; apply(''); }
+  });
+  if(clear){
+    clear.addEventListener('click', function(){
+      input.value = ''; apply(''); input.focus();
+    });
+  }
+
+  input.placeholder = 'Name, or what it does \u2014 ' + total + ' apps';
+  finder.hidden = false;
+  apply('');
 })();
 </script>
 
